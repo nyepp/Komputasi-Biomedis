@@ -1,0 +1,65 @@
+# Nama  : Ahmad Nayef Al Fito
+# NIM   : 082111733037
+# Kelas : Komputasi Biomedis T1
+
+# Soal 2
+
+# Deklarasi awal
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+
+# Memasukkan data
+t = np.array([0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5])
+y = np.array([1.000, 0.994, 0.990, 0.985, 0.979, 0.977, 0.972, 0.969, 0.967, 0.960, 0.956, 0.952])
+
+# Menyesuaikan data dengan persamaan regresi linier
+Y = np.log(y)
+
+# Menghitung nilai ty, y^2 dan x^2
+tY = t * Y
+t_squared = t ** 2
+Y_squared = Y ** 2
+
+# Menghitung nilai a dan b menggunakan regresi linier
+slope, intercept, r_value, p_value, std_err = linregress(t, Y)
+a = np.exp(intercept)
+b = -slope
+
+# Mengatur tampilan dataframe
+data = {'No.': range(1, len(t) + 1), 't': t, 'y': y, 'ln(y)': Y, 't*ln(y)': tY, 't^2': t_squared, '(ln(y))^2': Y_squared}
+df = pd.DataFrame(data)
+
+# Menghitung jumlah nilai s
+nilai_s = (Y - intercept - slope * t) ** 2
+S = np.sum(nilai_s)
+
+# Menampilkan nilai a dan b
+print('Y = BX+A')
+print('ln(y(t))= -bt + ln(a)')
+print("Bentuk Persamaan Regresi Liniernya adalah: ln(y(t)) = {:.4f} - ({:.4f})t".format(intercept, slope))
+print("Nilai a:", a)
+print("Nilai b:", b)
+print('\n')
+
+# Menampilkan DataFrame
+print('Tabel regresi linear dari data:')
+print(df)
+print('\n')
+
+# Menampilkan nilai a, b dan S
+print('Maka, ')
+print("Nilai a:", a)
+print("Nilai b:", b)
+print("Nilai S:", S)
+print('\n')
+
+# Plot data dan hasil regresi
+print('Grafik plot data:')
+plt.scatter(t, Y, label="Data")
+plt.plot(t, intercept + slope * t, color="red", label="Regresi Linier")
+plt.xlabel("t")
+plt.ylabel("ln(y)")
+plt.legend()
+plt.show()
