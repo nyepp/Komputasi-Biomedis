@@ -1,0 +1,78 @@
+# Nama  : Ahmad Nayef Al Fito
+# NIM   : 082111733037
+# Kelas : Komputasi Biomedis T1
+
+# contoh soal
+
+# Deklarasi awal
+import numpy as np
+import pandas as pd
+from numpy import *
+import pylab
+
+# Memasukkan data
+x = np.array([0.0, 1.0, 2.0, 2.5, 3.0])
+y = np.array([2.9, 3.7, 4.1, 4.4, 5.0])
+n = len (x)
+
+# Menghitung nilai xy dan x^2
+xy = x * y
+x_squared = x ** 2
+
+# Menghitung nilai a dan b menggunakan regresi linier
+mean_x = np.mean(x)
+mean_y = np.mean(y)
+b = np.sum((x - mean_x) * (y - mean_y)) / np.sum((x - mean_x) ** 2)
+a = mean_y - b * mean_x
+nilai_s = (y - a - b * x) ** 2
+
+# Mengatur tampilan dataframe
+data = {'No.': range(1, len(x) + 1), 'x': x, 'y': y, 'xy': xy, 'x^2': x_squared,'s ke i' : nilai_s}
+df = pd.DataFrame(data)
+
+# Menghitung jumlah nilai s
+S = np.sum(nilai_s)
+
+# Menghitung jumlah x, jumlah y, jumlah xy, dan jumlah x^2
+jumx=np.sum(x)
+jumy=np.sum(y)
+jumxy=np.sum(xy)
+jumx_squared=np.sum(x_squared)
+
+#C^-1.D
+M = np.array([[n,jumx],[jumx,jumx_squared]])
+N = np.array([[jumy],[jumxy]])
+ab = np.dot(np.linalg.inv(M),N)
+ybaru = zeros(n,float)
+for i in range (0,n):
+  ybaru[i] = ab[1]*x[i]+ab[0]
+
+
+# Menampilkan nilai a dan b
+print ('y = bX + a')
+print("Bentuk Persamaan Regresi Liniernya adalah: f(x) = ",a,"+",b,"x" )
+print("Nilai a:", a)
+print("Nilai b:", b)
+print('\n')
+
+# Mendampilkan DataFrame
+print('Tabel regresi linear dari data:')
+print(df)
+print("Jumlah X:", jumx)
+print("Jumlah Y:", jumy)
+print("Jumlah XY:", jumxy)
+print("Jumlah X^2:", jumx_squared)
+print('\n')
+
+# Menampilkan nilai a, b dan S
+print('Maka, ')
+print("Nilai a:", a)
+print("Nilai b:", b)
+print("Nilai S:", S)
+print('\n')
+
+# Menampilkan grafik hasil regresi
+print('Grafik plot data:')
+pylab.plot(x,y,'og')
+pylab.plot(x,ybaru,'-y')
+print('Keterangan : Garis kuning = hasil regresi linear')
