@@ -1,0 +1,110 @@
+# Nama  : Ahmad Nayef Al Fito
+# NIM   : 082111733037
+# Kelas : Komputasi Biomedis T1
+
+# Soal 1
+
+# Deklarasi awal
+import numpy as np
+import pandas as pd
+from numpy import *
+import pylab
+import matplotlib.pyplot as plt
+from scipy.stats import linregress
+
+# Memasukkan data
+x = np.array([0.5, 1.0, 1.5, 2.0, 2.5])
+y = np.array([0.49, 1.60, 3.36, 6.44, 10.16])
+
+# Menyesuaikan data dengan persamaan regresi linier
+X = np.log(x)
+Y = np.log(y)
+
+# Menghitung nilai xy, y^2 dan x^2
+XY = X * Y
+X_squared = X ** 2
+Y_squared = Y ** 2
+
+# Menghitung nilai a dan b menggunakan regresi linier
+mean_X = np.mean(X)
+mean_Y = np.mean(Y)
+b = np.sum((X - mean_X) * (Y - mean_Y)) / np.sum((X - mean_X) ** 2)
+A = mean_Y - b * mean_X
+a = np.exp(A)
+nilai_s = (Y - A - b * X) ** 2
+
+# Mengatur tampilan dataframe
+data = {'No.': range(1, len(x) + 1), 'x': x, 'y': y, 'ln(x)': X, 'ln(y)': Y, 'ln(x)*ln(y)': XY, '(ln(x))^2': X_squared, '(ln(y))^2': Y_squared,'s ke i' : nilai_s}
+df = pd.DataFrame(data)
+
+# Menghitung jumlah nilai s
+S = np.sum(nilai_s)
+
+# Menghitung jumlah x, jumlah y,jumlah ln(x), jumlah ln(y), jumlah ln(x)ln(y), jumlah (lny)^2 dan jumlah (lnx)^2
+jumx=np.sum(x)
+jumy=np.sum(y)
+jumX=np.sum(X)
+jumY=np.sum(Y)
+jumXY=np.sum(XY)
+jumX_squared=np.sum(X_squared)
+jumY_squared=np.sum(Y_squared)
+
+
+# Menampilkan nilai a dan b
+print ('Y = bX+A')
+print ('ln(f(x))= b(ln(x))+ln(a)')
+print("Bentuk Persamaan Regresi Liniernya adalah: ln(f(x)) = ",A,"+",b,"ln(x)" )
+print("Nilai a:", a)
+print("Nilai ln(a):", A)
+print("Nilai b:", b)
+print('\n')
+
+# Mendampilkan DataFrame
+print('Tabel regresi linear dari data:')
+print(df)
+print("Jumlah x:", jumx)
+print("Jumlah y:", jumy)
+print("Jumlah lnx:", jumX)
+print("Jumlah lny:", jumY)
+print("Jumlah ln(x)ln(y):", jumXY)
+print("Jumlah (lnx)^2:", jumX_squared)
+print("Jumlah (lny)^2:", jumY_squared)
+print('\n')
+
+# Menampilkan nilai a, b dan S
+print('Maka, ')
+print("Nilai a:", a)
+print("Nilai b:", b)
+print("Nilai ln(a):", A)
+print("Nilai S:", S)
+print('\n')
+
+print('Grafik plot data:')
+
+# Melakukan Plot Sebelum Linearisasi
+plt.figure(figsize=(12, 4))
+plt.subplot(131)
+plt.scatter(x, y, label="Data Sebelum Linearisasi")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.legend()
+
+# Melakukan Plot Sesudah Linearisasi
+plt.subplot(132)
+plt.scatter(X, Y, label="Data Sesudah Linearisasi")
+plt.xlabel("ln(X)")
+plt.ylabel("ln(Y)")
+plt.legend()
+
+# Melakukan Plot Hasil Regresi Linear
+plt.subplot(133)
+plt.scatter(X, Y, label="Data Linearisasi")
+x_fit = np.linspace(min(X), max(X), 100)
+y_fit = A + b * x_fit
+plt.plot(x_fit, y_fit, color="red", label="Regresi Linier")
+plt.xlabel("ln(x)")
+plt.ylabel("ln(y)")
+plt.legend()
+
+plt.tight_layout()
+plt.show()
